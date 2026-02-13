@@ -68,6 +68,7 @@ const FilterBar = ({ filters, onFilterChange }) => {
                 >
                     <option value="latest">Latest</option>
                     <option value="oldest">Oldest</option>
+                    <option value="score">Match Score</option>
                 </select>
             </div>
         </div>

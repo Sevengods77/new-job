@@ -2,12 +2,15 @@ import React from 'react';
 import Card from './Card';
 import Button from './Button';
 import { MapPin, Briefcase, Clock, Bookmark, Eye, ExternalLink } from 'lucide-react';
+import { getScoreColor } from '../utils/scoring';
 
 const JobCard = ({ job, isSaved, onSave, onView }) => {
+    const scoreColor = getScoreColor(job.matchScore || 0);
+
     return (
-        <Card style={{ padding: '24px', display: 'flex', flexDirection: 'column', height: '100%', gap: '16px' }}>
+        <Card style={{ padding: '24px', display: 'flex', flexDirection: 'column', height: '100%', gap: '16px', position: 'relative' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div>
+                <div style={{ paddingRight: '40px' }}> {/* Space for score badge */}
                     <h3 style={{ margin: '0 0 4px 0', fontFamily: 'var(--font-serif)', fontSize: '1.25rem' }}>{job.title}</h3>
                     <p style={{ margin: 0, fontWeight: 600, color: 'var(--color-text)' }}>{job.company}</p>
                 </div>
@@ -25,6 +28,24 @@ const JobCard = ({ job, isSaved, onSave, onView }) => {
                 </button>
             </div>
 
+            {/* Match Score Badge */}
+            {job.matchScore !== undefined && (
+                <div style={{
+                    position: 'absolute',
+                    top: '24px',
+                    right: '60px', /* Left of Bookmark */
+                    backgroundColor: scoreColor,
+                    color: 'white',
+                    fontWeight: 'bold',
+                    fontSize: '0.85rem',
+                    padding: '4px 8px',
+                    borderRadius: '12px',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                }}>
+                    {job.matchScore}
+                </div>
+            )}
+
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', fontSize: '0.9rem', color: 'var(--color-subtext)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <MapPin size={16} />
@@ -37,6 +58,10 @@ const JobCard = ({ job, isSaved, onSave, onView }) => {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <Clock size={16} />
                     <span>{job.postedDaysAgo === 0 ? 'Today' : `${job.postedDaysAgo}d ago`}</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <ExternalLink size={16} />
+                    <span>{job.source}</span>
                 </div>
             </div>
 
@@ -66,22 +91,6 @@ const JobCard = ({ job, isSaved, onSave, onView }) => {
                     </Button>
                 </a>
             </div>
-
-            <div style={{ position: 'absolute', bottom: '24px', right: '24px', opacity: 0 }}>
-                {/* Hidden source for accessible reading or future use if needed, displaying source as badge instead */}
-            </div>
-            <span style={{
-                position: 'absolute',
-                top: '24px',
-                right: '60px',
-                fontSize: '0.75rem',
-                color: '#999',
-                border: '1px solid #eee',
-                padding: '2px 6px',
-                borderRadius: '4px'
-            }}>
-                {job.source}
-            </span>
         </Card>
     );
 };
