@@ -7,6 +7,7 @@ import Digest from './pages/Digest';
 import Settings from './pages/Settings';
 import Proof from './pages/Proof';
 import NotFound from './pages/NotFound';
+import Landing from './pages/Landing';
 
 // Import existing components if we want to keep the old project scope as a route, 
 // but for now I will focus on the requested Job Notification Tracker routes.
@@ -15,8 +16,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<JobTrackerLayout />}>
-        {/* Redirect root to dashboard */}
-        <Route index element={<Navigate to="/dashboard" replace />} />
+        <Route index element={<Landing />} />
 
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="saved" element={<Saved />} />
