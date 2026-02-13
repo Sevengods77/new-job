@@ -1,0 +1,26 @@
+.proof-footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.proof-group {
+    display: flex;
+    gap: var(--space-lg);
+}
+
+.proof-status {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.status-complete {
+    color: var(--color-success);
+}
+
+.status-pending {
+    color: var(--color-subtext);
+}

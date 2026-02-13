@@ -1,0 +1,41 @@
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-box {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--color-border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    transition: all var(--transition-fast);
+}
+
+.checkbox-container.checked .checkbox-box {
+    background-color: var(--color-success);
+    /* Use success green for checked state in proof footer? Or accent? */
+    /* User said "Success: muted green", let's use that for proof */
+    border-color: var(--color-success);
+}
+
+/* If the user wants consistent deep red, we can use accent. 
+   But "Proof Footer" implies success/verification. 
+   Let's stick to var(--color-text) or success. 
+   Plan said "Success: muted green". */
+
+.checkbox-label {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--color-text);
+}
+
+.checkbox-container:hover .checkbox-box {
+    border-color: var(--color-text);
+}
