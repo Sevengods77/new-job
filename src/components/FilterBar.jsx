@@ -62,6 +62,18 @@ const FilterBar = ({ filters, onFilterChange }) => {
                 </select>
 
                 <select
+                    value={filters.status}
+                    onChange={(e) => onFilterChange('status', e.target.value)}
+                    style={{ padding: '8px', borderRadius: '4px', border: '1px solid var(--color-border)', flex: 1, minWidth: '120px' }}
+                >
+                    <option value="">All Statuses</option>
+                    <option value="Not Applied">Not Applied</option>
+                    <option value="Applied">Applied</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Selected">Selected</option>
+                </select>
+
+                <select
                     value={filters.sort}
                     onChange={(e) => onFilterChange('sort', e.target.value)}
                     style={{ padding: '8px', borderRadius: '4px', border: '1px solid var(--color-border)', flex: 1, minWidth: '120px' }}

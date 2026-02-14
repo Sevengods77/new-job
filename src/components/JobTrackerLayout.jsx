@@ -1,6 +1,7 @@
 import React from 'react';
 import JobTrackerNav from './JobTrackerNav';
 import { Outlet } from 'react-router-dom';
+import Toast from './Toast';
 
 const JobTrackerLayout = () => {
     return (
@@ -9,6 +10,7 @@ const JobTrackerLayout = () => {
             <main style={{ flex: 1, height: '100%' }}>
                 <Outlet />
             </main>
+            <Toast />
         </div>
     );
 };

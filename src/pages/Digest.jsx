@@ -206,8 +206,79 @@ const Digest = () => {
                             </div>
                         </Card>
                     )}
+
+                    {/* Recent Status Updates Section */}
+                    <RecentStatusUpdates />
                 </>
             )}
+        </div>
+    );
+};
+
+const RecentStatusUpdates = () => {
+    const [updates, setUpdates] = useState([]);
+
+    useEffect(() => {
+        const loadUpdates = () => {
+            const stored = JSON.parse(localStorage.getItem('jobTrackerStatus') || '{}');
+            // Convert to array and filter/sort
+            const updatesList = Object.entries(stored).map(([jobId, data]) => {
+                const job = jobsData.find(j => j.id === parseInt(jobId));
+                if (!job) return null;
+                return {
+                    ...job,
+                    status: data.status,
+                    date: new Date(data.date)
+                };
+            }).filter(item => item !== null)
+                .sort((a, b) => b.date - a.date)
+                .slice(0, 5); // Show last 5
+
+            setUpdates(updatesList);
+        };
+
+        loadUpdates();
+
+        // Listen for changes to update this list in real-time too
+        window.addEventListener('jobStatusChange', loadUpdates);
+        return () => window.removeEventListener('jobStatusChange', loadUpdates);
+    }, []);
+
+    if (updates.length === 0) return null;
+
+    return (
+        <div style={{ marginTop: '32px' }}>
+            <h3 style={{ fontFamily: 'var(--font-serif)', marginBottom: '16px' }}>Recent Status Updates</h3>
+            <div style={{ display: 'grid', gap: '12px' }}>
+                {updates.map(update => (
+                    <div key={update.id} style={{
+                        backgroundColor: 'white',
+                        padding: '16px',
+                        borderRadius: '8px',
+                        border: '1px solid var(--color-border)',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }}>
+                        <div>
+                            <h4 style={{ margin: '0 0 4px 0', fontSize: '1rem' }}>{update.title}</h4>
+                            <p style={{ margin: 0, color: '#666', fontSize: '0.9rem' }}>{update.company}</p>
+                        </div>
+                        <div style={{ textAlign: 'right' }}>
+                            <div style={{
+                                fontWeight: 600,
+                                color: update.status === 'Selected' ? 'var(--color-success)' :
+                                    update.status === 'Rejected' ? 'var(--color-error)' : '#007bff'
+                            }}>
+                                {update.status}
+                            </div>
+                            <div style={{ fontSize: '0.8rem', color: '#999' }}>
+                                {update.date.toLocaleDateString()}
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

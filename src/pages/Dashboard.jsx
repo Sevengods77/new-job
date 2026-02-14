@@ -5,6 +5,7 @@ import FilterBar from '../components/FilterBar';
 import JobModal from '../components/JobModal';
 import { calculateMatchScore } from '../utils/scoring';
 import { Link } from 'react-router-dom';
+import useJobStatus from '../hooks/useJobStatus';
 
 const Dashboard = () => {
     const [jobs, setJobs] = useState([]);
@@ -15,12 +16,14 @@ const Dashboard = () => {
         location: '',
         mode: '',
         experience: '',
+        status: '', // Added status filter
         source: '',
         sort: 'latest' // 'latest', 'score', 'salary'
     });
     const [preferences, setPreferences] = useState(null);
     const [showMatchesOnly, setShowMatchesOnly] = useState(false);
     const [selectedJob, setSelectedJob] = useState(null);
+    const { statuses } = useJobStatus();
 
     // Initial Load: Preferences and Saved Jobs
     useEffect(() => {
@@ -56,10 +59,14 @@ const Dashboard = () => {
             const matchesExperience = filters.experience ? job.experience === filters.experience : true;
             const matchesThreshold = showMatchesOnly && preferences ? job.matchScore >= preferences.minMatchScore : true;
 
+            // Status Filtering
+            const jobStatus = statuses[job.id]?.status || 'Not Applied';
+            const matchesStatus = filters.status ? jobStatus === filters.status : true;
+
             // Added Source Filter if needed later, currently not in FilterBar state fully but logical
             // const matchesSource = filters.source ? job.source === filters.source : true;
 
-            return matchesSearch && matchesLocation && matchesMode && matchesExperience && matchesThreshold;
+            return matchesSearch && matchesLocation && matchesMode && matchesExperience && matchesThreshold && matchesStatus;
         });
 
         // Sort Logic
@@ -73,7 +80,7 @@ const Dashboard = () => {
         // Salary sort could be complex string parsing, leaving for now as requested simple
 
         setFilteredJobs(result);
-    }, [filters, jobs, showMatchesOnly, preferences]);
+    }, [filters, jobs, showMatchesOnly, preferences, statuses]);
 
 
     const handleFilterChange = (key, value) => {
