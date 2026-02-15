@@ -37,7 +37,7 @@ const JobTrackerNav = () => {
                     <NavLink to="/proof" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={() => setIsMenuOpen(false)}>
                         Proof
                     </NavLink>
-                    <div style={{ width: '100%', height: '1px', background: 'var(--color-border)', margin: '8px 0' }}></div>
+                    <div className="nav-separator"></div>
                     <NavLink to="/jt/07-test" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'} onClick={() => setIsMenuOpen(false)}>
                         Test Checklist
                     </NavLink>
