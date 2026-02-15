@@ -12,6 +12,21 @@ import Landing from './pages/Landing';
 // Import existing components if we want to keep the old project scope as a route, 
 // but for now I will focus on the requested Job Notification Tracker routes.
 
+import TestChecklist from './pages/TestChecklist';
+import Ship from './pages/Ship';
+import { TEST_ITEMS } from './utils/testItems';
+
+const ShipGuard = ({ children }) => {
+  const saved = localStorage.getItem('job_tracker_test_status');
+  const checkedItems = saved ? JSON.parse(saved) : {};
+  const passedCount = Object.values(checkedItems).filter(Boolean).length;
+
+  if (passedCount < TEST_ITEMS.length) {
+    return <Navigate to="/jt/07-test" replace />;
+  }
+  return children;
+};
+
 function App() {
   return (
     <Routes>
@@ -23,6 +38,14 @@ function App() {
         <Route path="digest" element={<Digest />} />
         <Route path="settings" element={<Settings />} />
         <Route path="proof" element={<Proof />} />
+
+        {/* New Test & Ship Routes */}
+        <Route path="jt/07-test" element={<TestChecklist />} />
+        <Route path="jt/08-ship" element={
+          <ShipGuard>
+            <Ship />
+          </ShipGuard>
+        } />
 
         {/* Catch-all for unknown routes */}
         <Route path="*" element={<NotFound />} />
